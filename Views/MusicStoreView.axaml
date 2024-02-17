@@ -11,10 +11,16 @@
       <TextBox Watermark="Search for Albums...." Text="{Binding SearchText}"/>
       <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsBusy}"  />
     </StackPanel>
-      <Button Content="Buy Album" 
-              DockPanel.Dock="Bottom" 
-              HorizontalAlignment="Center"
-              Margin="0 20 0 0" />
-      <ListBox ItemsSource="{Binding SearchResults}" SelectedItem="{Binding SelectedAlbum}"/>
+    <Button Content="Buy Album" 
+            DockPanel.Dock="Bottom" 
+            HorizontalAlignment="Center"/>
+    <ListBox ItemsSource="{Binding SearchResults}" SelectedItem="{Binding SelectedAlbum}"
+    Background="Transparent" Margin="0 20">
+    <ListBox.ItemsPanel>
+        <ItemsPanelTemplate>
+            <WrapPanel />
+        </ItemsPanelTemplate>
+    </ListBox.ItemsPanel>
+</ListBox>         
   </DockPanel>
 </UserControl>

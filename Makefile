@@ -6,7 +6,7 @@ build:
 	dotnet build
 
 publish:
-	dotnet publish -c Release -r linux-x64 -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -p:PublishTrimmed=true
+	dotnet publish -c Release -r linux-x64 -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -p:PublishTrimmed=true -p:TrimMode=copyused
 
 clean:
 	rm -rf $(CLEAN_TARGETS)
