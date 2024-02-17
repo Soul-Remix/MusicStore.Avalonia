@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace MusicStore.Avalonia.ViewModels;
 
@@ -71,14 +72,15 @@ public class MusicStoreViewModel : ViewModelBase
 
     private async void LoadCovers(CancellationToken cancellationToken)
     {
-        foreach (var album in SearchResults.ToList())
-        {
-            await album.LoadCover();
+        var loadCoverTasks = SearchResults
+        .Select(album => album.LoadCover())
+        .ToList();
 
-            if (cancellationToken.IsCancellationRequested)
-            {
-                return;
-            }
+        await Task.WhenAll(loadCoverTasks);
+
+        if (cancellationToken.IsCancellationRequested)
+        {
+            return;
         }
     }
 }
