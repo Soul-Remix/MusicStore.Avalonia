@@ -3,6 +3,7 @@ using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,14 +22,12 @@ public class MusicStoreViewModel : ViewModelBase
         get => _searchText;
         set => this.RaiseAndSetIfChanged(ref _searchText, value);
     }
+
     public bool IsBusy
     {
         get => _isBusy;
         set => this.RaiseAndSetIfChanged(ref _isBusy, value);
     }
-
-
-    public ObservableCollection<AlbumViewModel> SearchResults { get; } = [];
 
     public AlbumViewModel? SelectedAlbum
     {
@@ -36,8 +35,17 @@ public class MusicStoreViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _selectedAlbum, value);
     }
 
+    public ObservableCollection<AlbumViewModel> SearchResults { get; } = [];
+
+    public ReactiveCommand<Unit, AlbumViewModel?> BuyCommand { get; }
+
     public MusicStoreViewModel()
     {
+        BuyCommand = ReactiveCommand.Create(() =>
+        {
+            return SelectedAlbum;
+        });
+
         this.WhenAnyValue(x => x.SearchText)
             .Throttle(TimeSpan.FromMilliseconds(400))
             .ObserveOn(RxApp.MainThreadScheduler)
