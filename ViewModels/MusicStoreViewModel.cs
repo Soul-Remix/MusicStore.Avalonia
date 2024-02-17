@@ -1,7 +1,9 @@
-﻿using MusicStore.Avalonia.Models;
+﻿using DynamicData.Kernel;
+using MusicStore.Avalonia.Models;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -43,6 +45,7 @@ public class MusicStoreViewModel : ViewModelBase
     {
         BuyCommand = ReactiveCommand.Create(() =>
         {
+            _cancellationTokenSource?.Cancel();
             return SelectedAlbum;
         });
 
@@ -74,21 +77,22 @@ public class MusicStoreViewModel : ViewModelBase
             }
         }
 
-
         IsBusy = false;
     }
 
     private async void LoadCovers(CancellationToken cancellationToken)
     {
-        var loadCoverTasks = SearchResults
-        .Select(album => album.LoadCover())
-        .ToList();
-
-        await Task.WhenAll(loadCoverTasks);
-
-        if (cancellationToken.IsCancellationRequested)
+        try
         {
-            return;
+            var loadCoverTasks = SearchResults
+            .Select(album => album.LoadCover(cancellationToken))
+            .ToList();
+
+            await Task.WhenAll(loadCoverTasks);
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e);
         }
     }
 }

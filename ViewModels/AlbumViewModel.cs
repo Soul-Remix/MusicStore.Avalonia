@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using MusicStore.Avalonia.Models;
@@ -27,11 +28,35 @@ public class AlbumViewModel : ViewModelBase
         private set => this.RaiseAndSetIfChanged(ref _cover, value);
     }
 
-    public async Task LoadCover()
+    public async Task LoadCover(CancellationToken cancellationToken)
     {
-        await using (var imageStream = await _album.LoadCoverBitmapAsync())
+        await using (var imageStream = await _album.LoadCoverBitmapAsync(cancellationToken))
         {
             Cover = await Task.Run(() => Bitmap.DecodeToWidth(imageStream, 400));
+        }
+        await saveBitmapCover();
+    }
+
+    public async Task SaveToDiskAsync()
+    {
+        await _album.SaveAsync();
+
+        await saveBitmapCover();
+    }
+
+    private async Task saveBitmapCover()
+    {
+        if (Cover != null)
+        {
+            var bitmap = Cover;
+
+            await Task.Run(() =>
+            {
+                using (var fs = _album.SaveCoverBitmapStream())
+                {
+                    bitmap.Save(fs);
+                }
+            });
         }
     }
 }
