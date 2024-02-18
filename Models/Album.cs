@@ -47,6 +47,19 @@ public class Album
         }
     }
 
+    public async Task<Stream> LoadCoverBitmapAsync()
+    {
+        if (File.Exists(CachePath + ".bmp"))
+        {
+            return File.OpenRead(CachePath + ".bmp");
+        }
+        else
+        {
+            var data = await s_httpClient.GetByteArrayAsync(CoverUrl);
+            return new MemoryStream(data);
+        }
+    }
+
     public async Task SaveAsync()
     {
         if (!Directory.Exists("./Cache"))

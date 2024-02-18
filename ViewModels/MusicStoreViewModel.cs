@@ -71,10 +71,7 @@ public class MusicStoreViewModel : ViewModelBase
             {
                 SearchResults.Add(new AlbumViewModel(album));
             }
-            if (!cancellationToken.IsCancellationRequested)
-            {
-                LoadCovers(cancellationToken);
-            }
+            LoadCovers(cancellationToken);
         }
 
         IsBusy = false;
