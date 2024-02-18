@@ -13,22 +13,37 @@ public class Album
 {
     public static iTunesSearchManager _itunesSearch = new();
 
+    public string Id { get; set; }
     public string Artist { get; set; }
     public string Title { get; set; }
     public string CoverUrl { get; set; }
+    public string ReleaseDate { get; set; }
+    public int TrackCount { get; set; }
+    public string Genre { get; set; }
+    public string Country { get; set; }
+    public double Price { get; set; }
+    public string Currency { get; set; }
 
-    public Album(string artist, string title, string coverUrl)
+    public Album(string id, string artist, string title, string coverUrl,
+     string releaseDate, int trackCount, string genre, string country, double price, string currency)
     {
+        Id = id;
         Artist = artist;
         Title = title;
         CoverUrl = coverUrl;
+        ReleaseDate = releaseDate;
+        TrackCount = trackCount;
+        Genre = genre;
+        Country = country;
+        Price = price;
+        Currency = currency;
     }
 
     public static async Task<IEnumerable<Album>> SearchAsync(string title)
     {
         var results = await _itunesSearch.GetAlbumsAsync(title);
-        return results.Albums.Select(item => new Album(item.ArtistName, item.CollectionName,
-         item.ArtworkUrl100.Replace("100x100bb", "600x600bb")));
+        return results.Albums.Select(item => new Album(item.CollectionId.ToString(), item.ArtistName, item.CollectionName,
+         item.ArtworkUrl100.Replace("100x100bb", "600x600bb"), item.ReleaseDate, item.TrackCount, item.PrimaryGenreName, item.Country, item.CollectionPrice, item.Country));
     }
 
     private static readonly HttpClient s_httpClient = new();

@@ -19,6 +19,12 @@ public class AlbumViewModel : ViewModelBase
     public string Artist => _album.Artist;
 
     public string Title => _album.Title;
+    public string ReleaseDate => _album.ReleaseDate;
+    public int TrackCount => _album.TrackCount;
+    public string Genre => _album.Genre;
+    public string Country => _album.Country;
+    public double Price => _album.Price;
+    public string Currency => _album.Currency;
 
     private Bitmap? _cover;
 

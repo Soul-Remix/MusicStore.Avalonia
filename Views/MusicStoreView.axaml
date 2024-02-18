@@ -17,12 +17,12 @@
             IsEnabled="{Binding SelectedAlbum, Converter={x:Static ObjectConverters.IsNotNull}}"
             Command="{Binding BuyCommand}" />
     <ListBox ItemsSource="{Binding SearchResults}" SelectedItem="{Binding SelectedAlbum}"
-    Background="Transparent" Margin="0 20">
-    <ListBox.ItemsPanel>
-        <ItemsPanelTemplate>
-            <WrapPanel />
-        </ItemsPanelTemplate>
-    </ListBox.ItemsPanel>
-</ListBox>         
+      Background="Transparent" Margin="0 20">
+      <ListBox.ItemsPanel>
+          <ItemsPanelTemplate>
+              <WrapPanel />
+          </ItemsPanelTemplate>
+      </ListBox.ItemsPanel>
+    </ListBox>         
   </DockPanel>
 </UserControl>

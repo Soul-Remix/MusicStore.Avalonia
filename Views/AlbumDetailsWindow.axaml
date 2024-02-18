@@ -1,0 +1,76 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:vm="using:MusicStore.Avalonia.ViewModels"
+        x:Class="MusicStore.Avalonia.Views.AlbumDetailsWindow"
+        x:DataType="vm:AlbumDetailsViewModel"
+        Title="Album Details"
+        Width="850" Height="450"
+        TransparencyLevelHint="AcrylicBlur"
+        Background="Transparent"
+        ExtendClientAreaToDecorationsHint="True"
+        WindowStartupLocation="CenterOwner">
+  <Panel>
+        <ExperimentalAcrylicBorder IsHitTestVisible="False">
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="Black"
+                    TintOpacity="1"
+                    MaterialOpacity="0.65" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+
+        <Panel Margin="40">
+            <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto">
+                <StackPanel Margin="0 20" Spacing="20" Grid.Row="0" Grid.Column="0" IsHitTestVisible="true">
+                    <StackPanel Orientation="Horizontal">
+                        <SelectableTextBlock HorizontalAlignment="Center" Text="Album Title: ">
+                            <Run Text="{Binding Album.Title}"/>
+                        </SelectableTextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <SelectableTextBlock HorizontalAlignment="Center" Text="Album Artist: ">
+                            <Run Text="{Binding Album.Artist}"/>
+                        </SelectableTextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <SelectableTextBlock HorizontalAlignment="Center" Text="Release Date: ">
+                            <Run Text="{Binding Album.ReleaseDate}"/>
+                        </SelectableTextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <SelectableTextBlock HorizontalAlignment="Center" Text="Genre: ">
+                            <Run Text="{Binding Album.Genre}"/>
+                        </SelectableTextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <SelectableTextBlock HorizontalAlignment="Center" Text="Country: ">
+                            <Run Text="{Binding Album.Country}"/>
+                        </SelectableTextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <SelectableTextBlock HorizontalAlignment="Center" Text="Track Count: ">
+                            <Run Text="{Binding Album.TrackCount}"/>
+                        </SelectableTextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <SelectableTextBlock HorizontalAlignment="Center" Text="Price: ">
+                            <Run Text="{Binding Album.Price}"/>
+                        </SelectableTextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <Border CornerRadius="10" ClipToBounds="True" Width="350" Height="350" Grid.Row="0" Grid.Column="1">
+                    <Panel Background="#7FFF22DD">
+                        <Image Width="350" Stretch="Uniform" Source="{Binding Album.Cover}" />
+                        <Panel Height="200" IsVisible="{Binding Album.Cover, Converter={x:Static ObjectConverters.IsNull}}">
+                            <PathIcon Height="75" Width="75" Data="{StaticResource music_regular}" />
+                        </Panel>
+                    </Panel>
+                </Border>
+            </Grid>
+        </Panel>
+    </Panel>
+</Window>

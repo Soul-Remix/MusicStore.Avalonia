@@ -5,7 +5,7 @@
         xmlns:views="using:MusicStore.Avalonia.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="MusicStore.Avalonia.Views.MusicStoreWindow"
-        Title="MusicStoreWindow"
+        Title="Music Store"
         Width="1000" Height="550"
         WindowStartupLocation="CenterOwner">
   <Panel>

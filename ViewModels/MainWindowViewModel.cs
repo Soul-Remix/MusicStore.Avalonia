@@ -9,6 +9,8 @@ using ReactiveUI;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System;
+using System.Reactive;
+using MusicStore.Avalonia.Views;
 
 namespace MusicStore.Avalonia.ViewModels;
 
@@ -18,9 +20,20 @@ public class MainWindowViewModel : ViewModelBase
     public Interaction<MusicStoreViewModel, AlbumViewModel?> ShowDialog { get; }
     public ObservableCollection<AlbumViewModel> Albums { get; } = [];
 
+    private AlbumViewModel? _selectedAlbum;
+    public AlbumViewModel? SelectedAlbum
+    {
+        get => _selectedAlbum;
+        set => this.RaiseAndSetIfChanged(ref _selectedAlbum, value);
+    }
+
+    public Interaction<AlbumDetailsViewModel, AlbumViewModel?> ShowDetailsDialog { get; }
+    public ICommand DetailsCommand { get; }
+
     public MainWindowViewModel()
     {
         ShowDialog = new Interaction<MusicStoreViewModel, AlbumViewModel?>();
+        ShowDetailsDialog = new Interaction<AlbumDetailsViewModel, AlbumViewModel?>();
 
         BuyMusicCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -32,6 +45,12 @@ public class MainWindowViewModel : ViewModelBase
                 await result.SaveToDiskAsync();
                 result?.LoadCover();
             }
+        });
+
+        DetailsCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var store = new AlbumDetailsViewModel(SelectedAlbum!);
+            var result = await ShowDetailsDialog.Handle(store);
         });
 
         RxApp.MainThreadScheduler.Schedule(LoadAlbums);
